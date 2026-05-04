@@ -1,0 +1,19 @@
+schema_version = "1.0.0"
+
+id = "ffmpeg_blender_gui"
+version = "1.0.0"
+name = "FFmpeg GUI"
+tagline = "Graphical interface for FFmpeg encoding from Blender"
+maintainer = "Tomáš Klecer <xklece00@stud.fit.vutbr.cz>"
+type = "add-on"
+
+website = "https://github.com/xklece00/ffmpeg_blender_gui"
+tags = ["Render", "Sequencer", "Pipeline"]
+
+blender_version_min = "4.5.0"
+
+license = [
+  "SPDX:CC0-1.0",
+]
+
+permissions.files = "Read rendered frame sequences and write encoded video files"

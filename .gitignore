@@ -1,0 +1,16 @@
+@"
+# Python runtime
+__pycache__/
+*.pyc
+*.pyo
+
+# Editor / OS junk
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Build artefakty (vznikají z `make zip`)
+*.zip
+"@ | Set-Content -Encoding UTF8 .gitignore
