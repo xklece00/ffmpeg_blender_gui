@@ -13,7 +13,10 @@ tags = ["Render", "Sequencer", "Pipeline"]
 blender_version_min = "4.5.0"
 
 license = [
-  "SPDX:CC0-1.0",
+  "SPDX:GPL-3.0-or-later",
+]
+copyright = [
+  "2026 Tomáš Klecer",
 ]
 
 permissions.files = "Read rendered frame sequences and write encoded video files"

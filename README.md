@@ -14,7 +14,7 @@ and codecs without leaving Blender or touching a terminal.
 
 ## License
 
-Released under **CC0 1.0 Universal**. See the `LICENSE` file for the full text.
+Released under **GNU General Public License v3.0 or later**. This matches Blender's own GPL-3.0-or-later licensing and satisfies the Blender Extensions licensing requirements for add-ons. See the `LICENSE` file for the full text.
 
 ## Requirements
 
@@ -141,7 +141,7 @@ FFmpeg_Blender_GUI/
 ├── Makefile                # `make zip` / `make clean` / `make install`
 ├── build_zip.py            # cross-platform packaging helper
 ├── README.md               # this file
-└── LICENSE                 # CC0 1.0 Universal full text
+└── LICENSE                 # GPL-3.0-or-later full text
 ```
 
 ## Assignment
