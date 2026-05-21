@@ -133,7 +133,11 @@ def _on_container_change(self, context):
         item[0]
         for item in _codecs.audio_codecs_for_container(self.container, available_encoders=encoders)
     }
-    if self.audio_codec not in valid_audio and valid_audio:
+    if not valid_audio:
+        # Container without any audio support (e.g. GIF) - drop the stale
+        # codec so neither UI nor _audio_args keeps a invalid value.
+        self.audio_codec = "NONE"
+    elif self.audio_codec not in valid_audio:
         self.audio_codec = next(iter(valid_audio))
 
 

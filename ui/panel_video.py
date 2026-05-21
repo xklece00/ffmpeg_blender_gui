@@ -29,6 +29,12 @@ class MUL_PT_FFmpeg_Video(bpy.types.Panel):
 
         layout.prop(props, "video_codec")
 
+        if codec == _codecs.CUSTOM_CODEC_ID:
+            col = layout.column(align=True)
+            col.label(text="All video params via Custom Args", icon='INFO')
+            col.label(text="(see Advanced > Custom FFmpeg Args)")
+            return
+
         if _codecs.codec_supports_param(codec, "rate_mode"):
             layout.prop(props, "rate_mode")
 

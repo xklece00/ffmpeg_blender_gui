@@ -32,6 +32,12 @@ class MUL_PT_FFmpeg_Audio(bpy.types.Panel):
         layout.enabled = props.audio_enabled
         layout.prop(props, "audio_codec")
 
+        if props.audio_codec == _codecs.CUSTOM_CODEC_ID:
+            col = layout.column(align=True)
+            col.label(text="All audio params via Custom Args", icon='INFO')
+            col.label(text="(see Advanced > Custom FFmpeg Args)")
+            return
+
         info = _codecs.AUDIO_CODECS.get(props.audio_codec, {})
         if not info.get("lossless", False):
             layout.prop(props, "audio_bitrate")

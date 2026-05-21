@@ -100,6 +100,12 @@ def probe_encoders(ffmpeg_path):
 
 def _video_args(props):
     codec = props.video_codec
+    # CUSTOM bypass: emit nothing here so the user can write the entire
+    # video codec stack (-c:v, -crf, filters, hardware-encoder flags, ...)
+    # in Advanced > Custom FFmpeg Args without having to override
+    # defaults via duplicate flags.
+    if codec == _codecs.CUSTOM_CODEC_ID:
+        return []
     info = _codecs.VIDEO_CODECS.get(codec, {})
     args = ["-c:v", codec]
 
@@ -139,6 +145,11 @@ def _audio_args(props, audio_input_added):
     codec = props.audio_codec
     # No valid audio codec for this container (e.g. GIF) — emit nothing
     if not codec or codec == "NONE":
+        return []
+    # CUSTOM bypass: same as by _video_args. Audio input (-i audio.wav)
+    # is still added by build_command, so the user can route it however
+    # they want from Custom Args.
+    if codec == _codecs.CUSTOM_CODEC_ID:
         return []
     args = ["-c:a", codec]
     info = _codecs.AUDIO_CODECS.get(codec, {})

@@ -44,9 +44,13 @@ def _derive_frame_pattern(scene, frame):
 
 def _resolve_output_path(scene, props):
     if props.output_filepath:
-        return _codecs.ensure_container_ext(
-            bpy.path.abspath(props.output_filepath), props.container
-        )
+        base = bpy.path.abspath(props.output_filepath)
+        # User picked a directory-only path (e.g. "E:/Media/Videa/"). Without
+        # this, ensure_container_ext would happily produce ".mp4" with no
+        # basename and FFmpeg dies with "Invalid argument" on Windows.
+        if base.endswith(os.sep) or base.endswith("/") or not os.path.basename(base):
+            base = os.path.join(base, "render")
+        return _codecs.ensure_container_ext(base, props.container)
     base = bpy.path.abspath(scene.render.filepath) or "render"
     if base.endswith(os.sep) or base.endswith("/"):
         base = base + "render"

@@ -14,6 +14,18 @@
 import os
 
 
+# Sentinel value used in both video and audio codec dropdowns. Selecting it
+# tells _video_args / _audio_args to skip emitting any codec parameters at
+# all, leaving the user free to write the entire codec specification in the
+# Advanced -> Custom FFmpeg Args field. Useful for hardware encoders
+# (NVENC, QSV, VideoToolbox) and unstandard parameter combinations that the addon
+# table does not cover.
+CUSTOM_CODEC_ID = "CUSTOM"
+CUSTOM_CODEC_LABEL = "Custom (Custom Args only)"
+CUSTOM_CODEC_DESC = ("Skip all codec parameters; write -c:v / -c:a and "
+                     "any other flags yourself in Advanced > Custom FFmpeg Args")
+
+
 CONTAINERS = {
     "MP4":  {"label": "MP4",                "ext": "mp4",  "muxer": "mp4"},
     "MKV":  {"label": "Matroska (MKV)",     "ext": "mkv",  "muxer": "matroska"},
@@ -237,6 +249,8 @@ def ensure_container_ext(path, container_key):
 def video_codecs_for_container(container_key, available_encoders=None):
     """Return video codecs valid in the given container for UI filtering.
 
+    The ``CUSTOM`` sentinel is appended as the last option.
+
     When ``available_encoders`` is provided (a set of encoder ids
     that the user's FFmpeg actually supports), codecs not present in the set
     are skipped. ``None`` disables the filter and returns all known codecs
@@ -249,11 +263,18 @@ def video_codecs_for_container(container_key, available_encoders=None):
         if available_encoders is not None and codec_id not in available_encoders:
             continue
         out.append((codec_id, info["label"], info["label"]))
+    out.append((CUSTOM_CODEC_ID, CUSTOM_CODEC_LABEL, CUSTOM_CODEC_DESC))
     return out
 
 
 def audio_codecs_for_container(container_key, available_encoders=None):
-    """Like ``video_codecs_for_container`` but for audio codecs."""
+    """Like ``video_codecs_for_container`` but for audio codecs.
+
+    The ``CUSTOM`` sentinel is appended last (but only for containers that
+    actually support audio)
+    """
+    if not container_supports_audio(container_key):
+        return []
     out = []
     for codec_id, info in AUDIO_CODECS.items():
         if container_key not in info["containers"]:
@@ -261,6 +282,7 @@ def audio_codecs_for_container(container_key, available_encoders=None):
         if available_encoders is not None and codec_id not in available_encoders:
             continue
         out.append((codec_id, info["label"], info["label"]))
+    out.append((CUSTOM_CODEC_ID, CUSTOM_CODEC_LABEL, CUSTOM_CODEC_DESC))
     return out
 
 

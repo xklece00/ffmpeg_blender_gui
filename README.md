@@ -91,10 +91,19 @@ FFmpeg binary actually exposes (`ffmpeg -encoders`). Click *Test* in the
 add-on preferences to populate that filter; until then the full static
 list is shown with a hint in the panel.
 
-Anything not in the table can still be reached two ways:
+Anything not in the table can still be reached three ways:
 
+- **Custom (Custom Args only)** is the last entry in both the Video
+Codec and Audio Codec dropdowns. Pick it and the add-on will skip
+emitting any codec parameters, leaving you free to write the entire
+codec specification (`-c:v`, `-crf`, filters, hardware encoder flags…)
+in *Advanced > Custom FFmpeg Args* without colliding with the addon's
+defaults. Per-stream granularity is supported, e.g. *Custom* video
+with standard AAC audio. The Command Preview shows a hint when a
+codec is set to *Custom* but no matching `-c:v` / `-c:a` is present
+in Custom Args.
 - **Custom Args** in the *Advanced* sub-panel - any additional flag
-(filters, hardware encoders, color metadata, …) is appended to the
+(filters, color metadata, hardware encoders, …) is appended to the
 generated command and parsed safely with `shlex`. FFmpeg honours the
 last value of duplicated flags, so `-c:v h264_nvenc` typed there will
 override the codec picked in the dropdown.
